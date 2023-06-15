@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="fe504a89-2cfa-4152-b8da-672e85cc4b68" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="PostFlow" doc:id="ffc63330-4e79-4862-a0bf-8dc0ffe17b8c" >
+		<http:listener doc:name="POST /hello" doc:id="85dd32e5-526d-4dc0-b751-9a236a5bc48f" path="/hello" config-ref="HTTP_Listener_config" allowedMethods="POST"/>
+		<logger level="INFO" doc:name="Logger" doc:id="d381863f-2197-49c9-9249-2c38862ab3e4" message="POST request"/>
+		<set-payload value="#[output application/java&#10;---&#10;payload]" doc:name="Set Payload" doc:id="d94f8b8c-27e5-499e-a09a-d13f8fe513d0" />
+	</flow>
+	<flow name="GetFlow" doc:id="be2045ef-e612-43bf-b0fd-50990704aea6" >
+		<http:listener doc:name="/GET hello" doc:id="b808273c-7e70-41d5-abd6-3ab7105322f8" config-ref="HTTP_Listener_config" path="/hello" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="Logger" doc:id="c3e2e6e8-4b50-4ba9-ba22-6728a479da9a" message="get request" />
+		<set-payload value='{"message": "hello"}' doc:name="Set Payload" doc:id="328edfda-e68b-451a-ba52-666e4a1d368e" />
+	</flow>
+</mule>

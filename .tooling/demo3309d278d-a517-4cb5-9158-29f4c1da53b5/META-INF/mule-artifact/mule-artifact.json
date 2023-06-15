@@ -1,10 +1,10 @@
 {
   "configs": [
-    "demo2.xml"
+    "demo3.xml"
   ],
   "secureProperties": [],
   "redeploymentEnabled": true,
-  "name": "com.mycompany:demo2:1.0.0-SNAPSHOT",
+  "name": "com.mycompany:demo3:1.0.0-SNAPSHOT",
   "minMuleVersion": "4.4.0",
   "requiredProduct": "MULE",
   "classLoaderModelLoaderDescriptor": {
@@ -13,7 +13,7 @@
       "exportedPackages": [],
       "exportedResources": [
         "log4j2.xml",
-        "demo2.xml"
+        "demo3.xml"
       ]
     }
   },
