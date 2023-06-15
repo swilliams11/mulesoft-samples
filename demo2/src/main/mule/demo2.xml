@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracing="http://www.mulesoft.org/schema/mule/tracing" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="c33cd2fa-5ea7-4f9d-9f9d-1d97b8fb95ce" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="HelloWorldFlow" doc:id="764e69b0-cd9d-4c34-9f0d-3d5975d7002f" >
+		<http:listener doc:name="/GET HelloWorld" doc:id="190cfe1c-a420-4007-a978-700542e30b8e" path="/helloworld" config-ref="HTTP_Listener_config"/>
+		<logger level="INFO" doc:name="Logger" doc:id="53de3b6c-436e-4cc2-a92c-3613b66c0577" message="demo was invoked"/>
+		<set-variable value="10" doc:name="Set Variable" doc:id="69f16b58-a0b1-4f49-84c2-88c7aa5fc7c6" variableName="var1"/>
+		<logger level="INFO" doc:name="Logger" doc:id="258c7360-4a9d-48d1-99f4-0092d7c586a2" message="second logging step"/>
+	</flow>
+</mule>
