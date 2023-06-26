@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="ea59b798-35d7-49cb-8003-544f01f4550d" >
+		<file:connection workingDir="/Users/seanwilliams/AnypointStudio/studio-workspace/12_batch_processing" />
+	</file:config>
+	<flow name="12_batch_processingFlow" doc:id="44bdf56b-e8e0-4ae2-a499-6c27e7a6a264" >
+		<file:listener doc:name="On New or Updated File" doc:id="0f6128e7-5799-4355-972a-28863012bea1" >
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</file:listener>
+	</flow>
+</mule>
