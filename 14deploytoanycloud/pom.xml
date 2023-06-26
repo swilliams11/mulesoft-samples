@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mycompany</groupId>
-	<artifactId>12_batch_processing</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<artifactId>14deploytoanycloud</artifactId>
+	<version>1.0.0</version>
 	<packaging>mule-application</packaging>
 
-	<name>13_batch_processing</name>
+	<name>14deploytoanycloud</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,6 +29,9 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
+				<configuration>
+					<classifier>---- select project type ----</classifier>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -44,12 +47,6 @@
 			<groupId>org.mule.connectors</groupId>
 			<artifactId>mule-sockets-connector</artifactId>
 			<version>1.2.3</version>
-			<classifier>mule-plugin</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.mule.connectors</groupId>
-			<artifactId>mule-file-connector</artifactId>
-			<version>1.5.1</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>

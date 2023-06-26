@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ec01eed8-40a1-4b90-97e4-50ad83083e25" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="7d1e8ea6-66b5-42af-89bb-72dff4f8d310" >
+		<http:request-connection host="dummy.restapiexample.com" protocol="HTTPS"/>
+	</http:request-config>
+	<flow name="14deploytoanycloudFlow" doc:id="1c7481c2-e91b-4d19-bb04-fa12e5beec6e" >
+		<http:listener doc:name="DeployToAnycloud" doc:id="db0716df-8379-43c2-9557-51b9c8386f67" config-ref="HTTP_Listener_config" path="/employee" allowedMethods="GET"/>
+		<http:request method="GET" doc:name="Invoke Employee Webservice" doc:id="6c838f55-8a66-4d59-8ec7-462a3687e025" config-ref="HTTP_Request_configuration" path="/api/v1/employees"/>
+	</flow>
+</mule>
