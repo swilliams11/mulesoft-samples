@@ -27,6 +27,7 @@ output application/java
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<set-variable value="0" doc:name="Set Variable" doc:id="382713ab-542b-4ded-94ec-284a267ee6a2" variableName="batchCounter" />
 		<batch:job jobName="ProcessJob" doc:id="d27ae5dc-a067-467e-8f75-53c66269a835" >
 			<batch:process-records >
 				<batch:step name="Batch_Step" doc:id="1dd4bd87-0ecb-40f1-aaae-493df22f9946" >
@@ -38,7 +39,7 @@ output application/csv
 payload]]></ee:set-payload>
 						</ee:message>
 					</ee:transform>
-					<logger level="INFO" doc:name="Logger" doc:id="6aa5c8dc-9a2f-4ad8-99dd-d6ab298ceb40" message="Batch Step 1 Logging - Writing file."/>
+					<logger level="INFO" doc:name="Logger" doc:id="6aa5c8dc-9a2f-4ad8-99dd-d6ab298ceb40" message='#["Batch Job ID -" ++ vars.batchJobInstanceId ++ (vars.batchCounter + 1)]'/>
 					<file:write doc:name="Write" doc:id="f3f1ee20-4be2-4b35-9e13-6d512448ce8d" config-ref="File_Config1" path='#[payload[0].Loan_ID ++ ".csv"]'/>
 				</batch:step>
 				<batch:step name="Batch_Step1" doc:id="206114e0-8ecb-4ecd-869e-f59536ba6cd8" >
