@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="2487b125-da85-4c46-b080-115070f7af05" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="fad811a2-59c9-4cd9-811c-3af41e66f6ca" >
+		<db:generic-connection url="${db.url}" driverClassName="${db.driverClassName}" user="${db.username}" password="${db.password}" />
+	</db:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="144eecad-b03b-46e6-a1c2-7f16da2d0ee1" file="dbconfig.yaml" />
+	<flow name="16externaldatabaseFlow" doc:id="f2ce477f-9ffd-46f7-ad8d-b30df23aa0ae" >
+		<http:listener doc:name="GET /heroku/postgres" doc:id="6140d8b7-718a-4163-bab1-c6ca2c417b67" config-ref="HTTP_Listener_config" path="/heroku/postgres"/>
+		<db:select doc:name="Select" doc:id="a002fde1-b689-460b-b636-8b0d7ee9655b" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT * FROM People;]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="8c329844-dd16-49a9-a872-2aa1a546e07b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
