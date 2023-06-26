@@ -1,0 +1,5 @@
+db:
+  url: "jdbc:postgresql://HOSTNAME:5432/DATABASENAME?sslmode=require"
+  driverClassName: "org.postgresql.Driver"
+  username: "USERNAME"
+  password: "PASSWORD"
