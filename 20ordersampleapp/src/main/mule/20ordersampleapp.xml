@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="20ordersampleappFlow" doc:id="eb3d387b-ddc2-48eb-829d-dea042420614" >
+		<http:listener doc:name="Listener" doc:id="d6d9bc70-cc45-4245-821c-e4d83e6ea135" config-ref="HTTPListenerDomainProject" path="/orders"/>
+		<set-payload value='{"orderNum": 124}' doc:name="Set Payload" doc:id="f6b5058d-d6b7-49b4-9e61-80b4a9eaeba4" />
+	</flow>
+</mule>

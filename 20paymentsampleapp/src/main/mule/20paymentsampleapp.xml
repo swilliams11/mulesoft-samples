@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="20paymentsampleappFlow" doc:id="ac974172-d433-419a-bca2-dd194a17cd55" >
+		<http:listener doc:name="Listener" doc:id="0c98bf18-76eb-4f41-aa4d-fdefecb88b89" config-ref="HTTPListenerDomainProject" path="/payments"/>
+		<set-payload value='{"paymentId": 1234353}' doc:name="Set Payload" doc:id="50f81477-8532-4a48-8e56-e2ed54c05630" />
+	</flow>
+</mule>
