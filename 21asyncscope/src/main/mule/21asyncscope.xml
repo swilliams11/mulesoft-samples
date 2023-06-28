@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="dd961264-27ef-41ca-8af6-b6500c34757d" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="21asyncscopeFlow" doc:id="db1478f9-719e-4ddb-a4ff-752a6ff672f2" >
+		<http:listener doc:name="Listener" doc:id="e3e5aabc-7e92-425d-be70-f570a4ea1582" config-ref="HTTP_Listener_config" path="/async"/>
+		<logger level="INFO" doc:name="Logger" doc:id="29ed7faf-60bc-4619-949b-b3537267dd38" message="Before Async"/>
+		<async doc:name="Async" doc:id="62b4a74f-2f85-42a6-af90-8c75f899d4ff" >
+			<logger level="INFO" doc:name="Logger" doc:id="adbaea60-d5d7-4079-b60d-eefd4b141d0b" message="Async 1"/>
+			<scripting:execute doc:name="Execute" doc:id="96b19b53-4b34-4fb9-a765-35207f4ccfd6" engine="groovy">
+				<scripting:code ><![CDATA[test = "hello world"]]></scripting:code>
+			</scripting:execute>
+			<logger level="INFO" doc:name="Logger" doc:id="e7298fc0-9deb-44b9-83e1-c106afe497d8" message="Async complete"/>
+		</async>
+		<logger level="INFO" doc:name="Logger" doc:id="a2432d53-e4d7-4efd-822f-8aff4e1c182a" message="After Async"/>
+	</flow>
+</mule>
