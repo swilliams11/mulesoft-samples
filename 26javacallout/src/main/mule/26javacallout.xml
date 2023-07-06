@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:java="http://www.mulesoft.org/schema/mule/java" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/java/current/mule-java.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="24b0b6c8-a09f-4fef-a568-17a417897aa5" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="26javacalloutFlow" doc:id="514208d5-b9b3-4bc3-83a0-709495f47c58" >
+		<http:listener doc:name="Listener" doc:id="058c8434-10c1-4ad2-8076-af677a22917c" config-ref="HTTP_Listener_config" path="/java"/>
+		<java:invoke-static method="concat(String, String)" doc:name="Invoke static" doc:id="37a583bc-ca31-4c4f-b313-7e96c6212745" class="StringOperations">
+			<java:args ><![CDATA[#[output application/java
+---
+{
+	a: attributes.queryParams.firstName as String,
+	b: attributes.queryParams.lastName as String
+}]]]></java:args>
+		</java:invoke-static>
+	</flow>
+	<flow name="26javacalloutFlow1" doc:id="5429ac79-caa0-4382-9bc3-cebe1886248b" >
+		<http:listener doc:name="Listener" doc:id="1406293e-ce2e-4722-802a-b1bf76888a3a" config-ref="HTTP_Listener_config" path="/nonstaticjava"/>
+		<java:new constructor="StringOperations()" doc:name="New" doc:id="9b502297-8b0d-4627-8546-cc04aef35370" class="StringOperations" target="strObj"/>
+		<java:invoke method="multiConcat(String, String, String, String)" doc:name="Invoke" doc:id="b688fb75-2bdb-4e60-9b36-90288d01f4db" instance="#[vars.strObj]" class="StringOperations">
+			<java:args ><![CDATA[#[output application/java
+---
+{
+	a: attributes.queryParams.fName as String,
+	b: attributes.queryParams.mName as String,
+	c: attributes.queryParams.lName as String,
+	d: attributes.queryParams.suffix as String
+}]]]></java:args>
+		</java:invoke>
+	</flow>
+</mule>
