@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:sap="http://www.mulesoft.org/schema/mule/sap" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="23b15ae5-3c40-4273-b4e4-a362520fb13e" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="27-sap-demoFlow" doc:id="264a90fa-aa29-4b66-9d50-d322ce78e30d" >
+		<http:listener doc:name="Listener" doc:id="f3c461dd-5c47-46cd-bbb0-1abe3ca5119e" config-ref="HTTP_Listener_config" path="/getDecNumberFromTID"/>
+		<set-variable value="#[attributes.queryParams.tid]" doc:name="Set Variable" doc:id="1432d238-d3ba-41b8-a100-5d6044252dfe" variableName="tid"/>
+		<sap:sync-rfc doc:name="Synchronous Remote Function Call" doc:id="2a1e41f5-8983-49ce-aa9c-dec2b979049c" />
+	</flow>
+</mule>
