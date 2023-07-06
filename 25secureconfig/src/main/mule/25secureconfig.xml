@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="34fb6a63-7e08-4219-83b7-24cb014523d7" >
+		<salesforce:basic-connection username="${sfdc.username}" password="${secure::sfdc.password}" securityToken="${secure::sfdc.tokennumber}" url="${sfdc.url}"/>
+	</salesforce:sfdc-config>
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="84877cd3-b388-4446-80aa-3c2843a3b811" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="dbae2c88-b6cc-4a2b-a1f7-a15b3a3a5a9e" file="myConfig.properties" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="3941810d-70b1-4014-a851-23694aa41feb" file="myConfig.properties" key="MyMuleSoft" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+	<flow name="25secureconfigFlow" doc:id="da7a46a4-745b-4ba8-8bdc-cdbfaea762f8" >
+		<http:listener doc:name="Listener" doc:id="0e8d4c88-d57c-425a-b4d0-5f03b5d67da9" config-ref="HTTP_Listener_config" path="/test"/>
+		<salesforce:query doc:name="Query" doc:id="15ecfebc-97f6-4ba0-85cb-32398b5a3b3b" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[select * from Account]]></salesforce:salesforce-query>
+		</salesforce:query>
+	</flow>
+</mule>
