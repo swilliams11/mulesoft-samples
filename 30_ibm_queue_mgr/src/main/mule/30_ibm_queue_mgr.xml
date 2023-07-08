@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:ibm-mq="http://www.mulesoft.org/schema/mule/ibm-mq"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ibm-mq http://www.mulesoft.org/schema/mule/ibm-mq/current/mule-ibm-mq.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="358c306e-4f62-4316-8a3f-74530752f6cf" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<ibm-mq:config name="IBM_MQ_Config" doc:name="IBM MQ Config" doc:id="668072d0-7033-4e58-887b-f09fea889534" >
+		<ibm-mq:connection username="${secure::mq.username}" password="${secure::mq.password}">
+			<ibm-mq:connection-mode >
+				<ibm-mq:client host="${secure::mq.host}" queueManager="${secure::mq.queuemanager}" channel="${mq.channel}" />
+			</ibm-mq:connection-mode>
+		</ibm-mq:connection>
+	</ibm-mq:config>
+	<secure-properties:config name="secureConfig" doc:name="Secure Properties Config" doc:id="0cf5a382-b101-4248-bbc1-38db8ba0f06c" file="config.properties">
+	</secure-properties:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="5ce140c7-f0b4-42b3-b346-88869a0eb141" file="config.properties" />
+	<flow name="30_ibm_queue_mgrFlow" doc:id="eafbbddd-ccc8-4920-896f-43295291e559" >
+		<http:listener doc:name="Listener" doc:id="e6efe0df-b958-438a-9737-5b46dc636e5e" config-ref="HTTP_Listener_config" path="/ibmqueue"/>
+		<ibm-mq:publish doc:name="Publish" doc:id="37e7ff15-d5b0-4d95-b38b-436693728dd0" config-ref="IBM_MQ_Config" destination="${mq.queuename}">
+			<ibm-mq:message >
+				<ibm-mq:body ><![CDATA[#[{
+	"message": "test message!"
+}]]]></ibm-mq:body>
+			</ibm-mq:message>
+		</ibm-mq:publish>
+	</flow>
+</mule>
