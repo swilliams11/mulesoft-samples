@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6b8c20a4-e7d2-4362-a7fb-f72104416c99" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="b42baad2-72ce-4a7c-a40f-529ff735dd8a">
+		<http:request-connection protocol="HTTPS" host="httpbin.org" />
+	</http:request-config>
+	<flow name="40untilsuccessfuldemoFlow" doc:id="65065eb5-2951-4799-9a23-cd4ccaebb1c9" >
+		<http:listener doc:name="Listener" doc:id="134b2569-74bf-494e-ac2d-ca855d09ef05" config-ref="HTTP_Listener_config" path="/untilsuccess"/>
+		<until-successful maxRetries="5" doc:name="Until Successful" doc:id="b3767298-87e1-458a-aebe-d6f1307930fe" millisBetweenRetries="5000">
+			<http:request method="GET" doc:name="Request" doc:id="4b9e32e1-0a18-4481-a355-e425973d3bc3" config-ref="HTTP_Request_configuration" path="/status/400"/>
+			<logger level="INFO" doc:name="Logger" doc:id="c19b6884-993e-4dfe-bda4-d91e85acd9a6" message="until unsuccessful 1"/>
+		</until-successful>
+	</flow>
+</mule>
