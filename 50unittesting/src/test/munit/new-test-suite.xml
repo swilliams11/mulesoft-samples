@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="new-test-suite.xml" />
+	<munit:test name="new-test-suite-50unittestingFlowTest" doc:id="f7c3d752-44e2-4990-9abc-7b2a07922b27" description="Test">
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="62e936bb-787a-4ccd-a40c-600f047ebf9a" >
+				<munit:attributes value='#[{queryParams: {"num1":10, "num2":20}}]' />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to 50unittestingFlow" doc:id="32c7280e-47a6-4733-9e50-5e7dda90e701" name="50unittestingFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="ee88a24b-af06-40a1-bed7-308040c8cfeb" actual="#[payload.body.AddResponse.AddResult]" expected="30"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>
