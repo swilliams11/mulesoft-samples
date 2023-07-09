@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="b624a8b8-2c94-4a0e-9c12-f7acf18b949d" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="50ValidateJsonDemoFlow" doc:id="e1291db4-9cc3-45c8-9f7e-d06b10613c65" >
+		<http:listener doc:name="Listener" doc:id="0f7a5e0b-f078-4ce5-b6df-f298eeebdabf" config-ref="HTTP_Listener_config" path="/jsonvalidate" allowedMethods="POST"/>
+		<json:validate-schema doc:name="Validate schema" doc:id="fa629815-1f59-4952-a560-d570d2c08b93" schema="person-schema.json"/>
+		<logger level="INFO" doc:name="Logger" doc:id="ed55236f-6c49-45dd-b8c4-ad9f280d2c80" message="validating data"/>
+	</flow>
+</mule>

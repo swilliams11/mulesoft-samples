@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="7a87e451-54d8-4bfc-9147-bea74fa21253" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<validation:config name="Validation_Config" doc:name="Validation Config" doc:id="282bd18a-8d15-489c-93c9-eb24936fc48b" />
+	<flow name="55emailvalidationdemoFlow" doc:id="2eb658b4-8e27-4b6d-951b-2a5e13dbbb6d" >
+		<http:listener doc:name="Listener" doc:id="25a8e169-b330-4b07-b363-72610e4fbc28" config-ref="HTTP_Listener_config" path="/validate"/>
+		<set-variable value="#[attributes.queryParams.emailID]" doc:name="Set Variable" doc:id="d37a3260-b7b8-4018-8de2-ca08ac82461f" variableName="email" mimeType="text/plain"/>
+		<validation:is-email doc:name="IsEmail" doc:id="edfe055d-e10b-415c-8694-74aa532fb67c" email="#[attributes.queryParams.emailID]" message='#["Invalid email ID." ++ vars.email as String]' config-ref="Validation_Config"/>
+		<ee:transform doc:name="Transform Message" doc:id="43ba873a-2aed-4e7d-a1d9-8c88c746879d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	errorMessage: error.detailedDescription
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
