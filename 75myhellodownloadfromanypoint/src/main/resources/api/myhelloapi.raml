@@ -1,0 +1,13 @@
+#%RAML 1.0
+title: MyHelloAPI
+
+/hello:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: {
+              "message": "this is a sample response from hello!"
+            }
+            
