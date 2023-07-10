@@ -1,0 +1,39 @@
+#%RAML 1.0
+title: CustomerDemoAPI
+
+description: Customer API
+
+/customer:
+  get:
+    description: This method retrieves customer data
+    queryParameters:
+      id: 
+        required: true
+        example: "12345"
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                "firstname": "Jack",
+                "lastname": "Hertz"
+              }
+      500:
+        body:
+          application/json:
+            example:
+              "Internal Error"
+
+  post:
+    description: Creates the customer information.
+    body:
+      application/json:
+        example:
+           {
+                "firstname": "Jack",
+                "lastname": "Hertz"
+              }    
+
+      
+          
