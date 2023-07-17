@@ -16,7 +16,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 				<http:headers ><![CDATA[#[output application/java
 ---
 {
-	"Name" : "Max"
+	"Name" : attributes.queryParams.fname
 }]]]></http:headers>
 			</http:response>
 		</http:listener>
@@ -25,14 +25,14 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 			<http:query-params ><![CDATA[#[output application/java
 ---
 {
-	"fullName" : "Max Mule"
+	"fullName" : attributes.queryParams.fname
 }]]]></http:query-params>
 		</http:request>
-		<logger level="INFO" doc:name="Logger" doc:id="b8b58158-b556-44e6-9f20-9b2f841d02d5" />
+		<logger level="INFO" doc:name="Logger" doc:id="b8b58158-b556-44e6-9f20-9b2f841d02d5" message="#['\nMessage: ' ++ payload]"/>
 	</flow>
 	<flow name="mt_1httplistenerFlow" doc:id="f006f576-9aac-4d7b-854b-911c6ea61be3" >
 		<http:listener doc:name="GET /goodbye" doc:id="bd2b750f-b539-4a0a-aed2-dbc3f91afbc6" config-ref="HTTP_Listener_config" path="/goodbye" allowedMethods="GET"/>
-		<set-payload value="Goodbye!" doc:name="Goodby" doc:id="7a8b3883-110b-44ba-a131-d10ebe973b22" />
-		<logger level="INFO" doc:name="Logger" doc:id="5d687157-4796-4c2e-87fd-e7ee2b11d25f" />
+		<set-payload value="#[upper('Goodbye!') ++ ' ' ++ (attributes.queryParams.fullName default &quot;Maxine&quot;)]" doc:name="Goodbye" doc:id="7a8b3883-110b-44ba-a131-d10ebe973b22" />
+		<logger level="INFO" doc:name="Logger" doc:id="5d687157-4796-4c2e-87fd-e7ee2b11d25f" message="#[attributes.queryParams.fullName]"/>
 	</flow>
 </mule>
