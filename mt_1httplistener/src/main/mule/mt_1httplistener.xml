@@ -11,9 +11,23 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:request-connection host="localhost" port="8081" />
 	</http:request-config>
 	<flow name="helloFlow" doc:id="c51d7125-ffe5-4be9-b97d-8523b9305058" >
-		<http:listener doc:name="GET /hello" doc:id="062aedb5-26e5-4e62-830c-9ae8542f24c4" config-ref="HTTP_Listener_config" path="/hello" allowedMethods="GET"/>
+		<http:listener doc:name="GET /hello" doc:id="062aedb5-26e5-4e62-830c-9ae8542f24c4" config-ref="HTTP_Listener_config" path="/hello" allowedMethods="GET">
+			<http:response reasonPhrase="Success" >
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Name" : "Max"
+}]]]></http:headers>
+			</http:response>
+		</http:listener>
 		<set-payload value="Hello" doc:name="Hello" doc:id="ca570f56-e240-4265-8e25-30a20812909e" />
-		<http:request method="GET" doc:name="GET /goodbye" doc:id="27820b54-40e4-4031-9f47-a6b5694bb194" path="/goodbye" config-ref="HTTP_Request_configuration" responseTimeout="300000"/>
+		<http:request method="GET" doc:name="GET /goodbye" doc:id="27820b54-40e4-4031-9f47-a6b5694bb194" path="/goodbye" config-ref="HTTP_Request_configuration" responseTimeout="300000">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"fullName" : "Max Mule"
+}]]]></http:query-params>
+		</http:request>
 		<logger level="INFO" doc:name="Logger" doc:id="b8b58158-b556-44e6-9f20-9b2f841d02d5" />
 	</flow>
 	<flow name="mt_1httplistenerFlow" doc:id="f006f576-9aac-4d7b-854b-911c6ea61be3" >
