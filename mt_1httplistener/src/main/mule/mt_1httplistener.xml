@@ -20,7 +20,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 }]]]></http:headers>
 			</http:response>
 		</http:listener>
-		<set-variable value="#[attributes.queryParams.fname]" doc:name="firstName" doc:id="4b79b8b8-767f-4c7b-883d-0ca5d0d33f6c" variableName="firstName"/>
+		<set-variable value="#[attributes.queryParams.fnxame]" doc:name="firstName" doc:id="4b79b8b8-767f-4c7b-883d-0ca5d0d33f6c" variableName="firstName"/>
 		<set-payload value="Hello" doc:name="Hello" doc:id="ca570f56-e240-4265-8e25-30a20812909e" />
 		<http:request method="GET" doc:name="GET /goodbye" doc:id="27820b54-40e4-4031-9f47-a6b5694bb194" path="/goodbye" config-ref="HTTP_Request_configuration" responseTimeout="300000">
 			<http:query-params ><![CDATA[#[output application/java
