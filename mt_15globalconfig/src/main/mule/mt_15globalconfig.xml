@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+	
+	<flow name="helloFlow" doc:id="c51d7125-ffe5-4be9-b97d-8523b9305058" >
+		<http:listener doc:name="GET /hello" doc:id="062aedb5-26e5-4e62-830c-9ae8542f24c4" config-ref="HTTP_Listener_config" path="/hello" allowedMethods="GET">
+			<http:response reasonPhrase="Success" >
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"name" : vars.firstName
+}]]]></http:headers>
+			</http:response>
+		</http:listener>
+		<flow-ref doc:name="appdevExamplesSubFlow" doc:id="6843a686-3770-43fb-ba0b-7d48c2db796d" name="appdevExamplesSubFlow"/>
+		<vm:publish queueName="goodbye" doc:name="Publish" doc:id="50e9c717-7239-403e-be75-9d94e166682a" config-ref="VM_Config"/>
+		<logger level="INFO" doc:name="Logger" doc:id="b8b58158-b556-44e6-9f20-9b2f841d02d5" message="#['\nMessage: ' ++ payload]"/>
+	</flow>
+	<flow name="privateFlow" doc:id="8df1cf3d-e458-40e9-abe1-5facbb8cfbed">
+		<http:request method="GET" doc:name="GET /goodbye" doc:id="27820b54-40e4-4031-9f47-a6b5694bb194" path="/goodbye" config-ref="HTTP_Request_configuration" responseTimeout="300000">
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"fullName" : attributes.queryParams.fname
+}]]]></http:query-params>
+		</http:request>
+	</flow>
+	<sub-flow name="appdevExamplesSubFlow" doc:id="394cbcfc-0a13-448a-a65e-6ef43eb532de" >
+		<set-variable value="#[attributes.queryParams.fname]" doc:name="firstName" doc:id="4b79b8b8-767f-4c7b-883d-0ca5d0d33f6c" variableName="firstName" />
+		<set-payload value="Hello" doc:name="Hello" doc:id="ca570f56-e240-4265-8e25-30a20812909e" />
+	</sub-flow>
+	<flow name="mt_1httplistenerFlow" doc:id="f006f576-9aac-4d7b-854b-911c6ea61be3" >
+		<vm:listener queueName="goodbye" doc:name="Listener" doc:id="d052dc92-32a2-4cdb-93db-9be0cebc0e5d" config-ref="VM_Config"/>
+		<set-payload value="#[upper('Goodbye!') ++ ' ' ++ (attributes.queryParams.fullName default &quot;Maxine&quot;)]" doc:name="Goodbye" doc:id="7a8b3883-110b-44ba-a131-d10ebe973b22" />
+		<logger level="INFO" doc:name="Logger" doc:id="5d687157-4796-4c2e-87fd-e7ee2b11d25f" message="#[attributes.queryParams.fullName]"/>
+	</flow>
+</mule>
