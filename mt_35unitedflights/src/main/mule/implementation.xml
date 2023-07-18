@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:american-flights-api="http://www.mulesoft.org/schema/mule/american-flights-api" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/american-flights-api http://www.mulesoft.org/schema/mule/american-flights-api/current/mule-american-flights-api.xsd">
+	<sub-flow name="setCode" doc:id="5d256fce-b20d-4acd-bdff-f12726a82049" >
+		<set-variable value='#[message.attributes.queryParams.code default "SFO"]' doc:name="code" doc:id="4b30cb7d-e6e7-41a2-9943-48a6c781d7fd" variableName="code"/>
+	</sub-flow>
+	<flow name="getAmericanFlights" doc:id="34b35a84-0201-4e16-a6e8-38ecbf905ccf" >
+		<http:listener doc:name="GET /american" doc:id="196a39c7-420a-4fd3-9cd6-e951e2365893" config-ref="HTTP_Listener_config" path="/american"/>
+		<flow-ref doc:name="Flow Reference" doc:id="be9c96f2-c154-4ce7-82eb-24bbf4d887b6" name="setCode"/>
+		<american-flights-api:get-flights doc:name="Get flights" doc:id="178ee5b0-5a5d-419b-9665-f7e64c3d5cb5" config-ref="American_Flights_API_Config" client-id="${american.client_id}" client-secret="${american.client_secret}" destination="#[vars.code]"/>
+	</flow>
+	<flow name="implementationFlow" doc:id="c781963c-777c-4b83-b59c-0ea418050114" >
+		<http:listener doc:name="getUnitedFlights" doc:id="2b86f65a-00f1-4829-bb87-a947034ceea1" config-ref="HTTP_Listener_config" path="/united" allowedMethods="GET"/>
+		<flow-ref doc:name="Flow Reference" doc:id="c5c762fe-4af0-4f9b-a198-06b9248f58c2" name="setCode"/>
+		<http:request method="GET" doc:name="getFlights" doc:id="7925b1e4-d838-43ab-a95f-3d49b949a82d" config-ref="HTTP_Request_configuration" path="/united/flights/{dest}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"dest" : vars.code
+}]]]></http:uri-params>
+		</http:request>
+	</flow>
+</mule>
