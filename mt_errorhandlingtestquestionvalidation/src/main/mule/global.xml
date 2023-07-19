@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<configuration doc:name="Configuration" doc:id="7cdeeddc-d56e-4619-8402-7d5f296cfa4e" defaultErrorHandler-ref="globalError_Handler" />
+	<!--error-handler name="globalError_Handler" doc:id="9335db12-6dd5-45d2-9d88-fc315c80e6f8" >
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a36f1aca-186c-47ee-9905-41656244e63b" >
+			<set-payload value="Global Error Handler" doc:name="Global Error Handler" doc:id="147ba2f9-0492-44a6-a8be-f72017e1f1b2" />
+		</on-error-continue>
+	</error-handler-->
+	<error-handler name="globalError_Handler" doc:id="1821c196-def7-45b7-b918-98bbd3ebeb69" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5b4c48cb-25d3-4510-a186-3aac18f8c8f7" >
+			<set-payload value="Global Error Handler" doc:name="Global Error Handler" doc:id="b957310a-e7db-425f-b012-95362ad94735" />
+		</on-error-propagate>
+	</error-handler>
+</mule>

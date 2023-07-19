@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a327f2c6-6d5d-42d8-b17e-832181cf379b" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="mt_errorhandlingtestquestionvalidationFlow" doc:id="f4566314-6aee-48df-baf6-ff44d96faaab" >
+		<http:listener doc:name="Listener" doc:id="33ff4f87-83ae-44c0-8e62-bd6ec033ac80" config-ref="HTTP_Listener_config" path="/error"/>
+		<set-payload value="Success - Begin Main flow" doc:name="Success - Begin Main flow" doc:id="edc81ff0-81ef-4447-bf07-ac1063680b89" />
+		<validation:is-number numberType="INTEGER" doc:name="Is number" doc:id="f9b9b9e6-e97a-42d6-9f9d-59bdc02c3a9c" value="#[payload]" message="Validate - Payload Is an Integer"/>
+		<set-payload value="Success - End Main Flow" doc:name="Success - End Main Flow" doc:id="b1bb6f45-f519-485b-bf04-6e881a4ae9ff" />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="fbe26bf3-b1fd-4fac-840f-e32e88288298" >
+				<set-payload value="Error - main flow" doc:name="Error Main Flow" doc:id="774a24f5-d47a-4328-8e52-2b3efc774c87" />
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="mt_errorhandlingtestquestionvalidationFlow2" doc:id="063b2851-47dc-4410-bed8-7ac864d74f3a" >
+		<http:listener doc:name="Listener" doc:id="e78e38b8-7341-4556-aa89-b88ca2f9921d" config-ref="HTTP_Listener_config" path="/error2"/>
+		<set-payload value="Success - Begin Main flow" doc:name="Success - Begin Main flow" doc:id="0abb029d-a051-438e-b8b4-f1cb9a70bb1a" />
+		<validation:is-number numberType="INTEGER" doc:name="Is number" doc:id="817c6a48-e8b2-48b0-8dab-7577abc9bb14" value="#[payload]" message="Validate - Payload Is an Integer"/>
+		<set-payload value="Success - End Main Flow" doc:name="Success - End Main Flow" doc:id="3b1ed448-3204-4ca4-8fce-96289aa82b4d" />
+		<!--error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="bf09c3b4-3e05-4ad1-a171-e7d73381ad1c" >
+				<set-payload value="Error - main flow" doc:name="Error Main Flow" doc:id="3b9c0fa4-e109-4033-8224-d0ae42e3b136" />
+			</on-error-propagate>
+		</error-handler-->
+	</flow>
+	
+	<flow name="mt_errorhandlingtestquestionvalidationFlow3" doc:id="7b07ecdd-f644-4fab-bc96-630510b1592f" >
+		<http:listener doc:name="Listener" doc:id="a2aba6c8-9a63-417a-81b9-076895939531" config-ref="HTTP_Listener_config" path="/error3"/>
+		<set-payload value="Success - Begin Main flow" doc:name="Success - Begin Main flow" doc:id="0415321a-0f91-4316-ae26-a9c1abd25baf" />
+		<validation:is-number numberType="INTEGER" doc:name="Is number" doc:id="71c71785-277e-477e-a8ed-1841a796c937" value="#[payload]" message="Validate - Payload Is an Integer"/>
+		<set-payload value="Success - End Main Flow" doc:name="Success - End Main Flow" doc:id="d2551d3a-4322-4c06-a674-e30fe5282e11" />
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="42f26ff2-6f9e-482a-a441-57eb61f2135f" >
+				<set-payload value="Error - main flow" doc:name="Error Main Flow" doc:id="f0500883-29ce-4bec-9689-1e525e2d9b53" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>
