@@ -235,7 +235,8 @@ data: {
 		<ee:transform doc:name="Transform Message" doc:id="997947a9-6df4-46e1-8518-e40c6d387e28" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
-output application/java
+output application/dw
+import dasherize from dw::core::Strings
 
 type Currency = String {format: "###.##"}
 type Flight = Object {class: "com.mulesoft.training.Flight"}
@@ -257,16 +258,17 @@ fun getNumSeats(planeType: String) = do{
 	maxSeats
 		}
 ---
-flights:
+flights: (
 	payload..*return map (object, index) -> {
 			destination: object.destination,
 			//price: object.price as Number {class: "java.lang.Double"},
 			price: object.price as Number as Currency,
 			//totalSeats: getNumSeats(object.planeType),
-			planeType: upper(object.planeType),
+			planeType: dasherize(replace(object.planeType, /(Boing)/) with "Boeing"),
 			departureDate: object.departureDate as Date {format: "yyyy/MM/dd"} 
-			as String {format: "MMM dd, yyyy"}	
-} as Flight]]></ee:set-payload>
+			as String {format: "MMM dd, yyyy"}	,
+			availableSeats: object.emptySeats as Number			
+} as Flight) distinctBy $ filter($.availableSeats != 0) orderBy $.departureDate orderBy $.price]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="d1ec3368-98ad-4507-823f-a6efccbfd1c3" />
