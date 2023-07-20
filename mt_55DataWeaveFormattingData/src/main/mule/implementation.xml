@@ -248,6 +248,29 @@ type Flight = Object {class: "com.mulesoft.training.Flight"}
 //	else
 //		300
 
+---
+flights: (
+	payload..*return map (object, index) -> {
+			destination: object.destination,
+			//price: object.price as Number {class: "java.lang.Double"},
+			price: object.price as Number as Currency,
+			//totalSeats: getNumSeats(object.planeType),
+			totalSeats: lookup("getTotalSeats", {planeType: object.planeType}),
+			planeType: dasherize(replace(object.planeType,/(Boing)/) with "Boeing"),
+			departureDate: object.departureDate as Date {format: "yyyy/MM/dd"} 
+				as String {format: "MMM dd, yyyy"}	,
+			availableSeats: object.emptySeats as Number			
+} as Flight) distinctBy $ filter($.availableSeats != 0) orderBy $.departureDate orderBy $.price]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="d1ec3368-98ad-4507-823f-a6efccbfd1c3" />
+	</flow>
+	<flow name="getTotalSeats" doc:id="673b9235-8b50-4d41-ac36-d4e7c52c6d5d" >
+		<ee:transform doc:name="Transform Message" doc:id="9b683f44-3c9c-4ed5-94e9-8131030ade09" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+
 fun getNumSeats(planeType: String) = do{
 	var maxSeats = 
 	if(planeType contains('737'))
@@ -258,19 +281,8 @@ fun getNumSeats(planeType: String) = do{
 	maxSeats
 		}
 ---
-flights: (
-	payload..*return map (object, index) -> {
-			destination: object.destination,
-			//price: object.price as Number {class: "java.lang.Double"},
-			price: object.price as Number as Currency,
-			//totalSeats: getNumSeats(object.planeType),
-			planeType: dasherize(replace(object.planeType, /(Boing)/) with "Boeing"),
-			departureDate: object.departureDate as Date {format: "yyyy/MM/dd"} 
-			as String {format: "MMM dd, yyyy"}	,
-			availableSeats: object.emptySeats as Number			
-} as Flight) distinctBy $ filter($.availableSeats != 0) orderBy $.departureDate orderBy $.price]]></ee:set-payload>
+getNumSeats(payload.planeType)]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="d1ec3368-98ad-4507-823f-a6efccbfd1c3" />
 	</flow>
 </mule>

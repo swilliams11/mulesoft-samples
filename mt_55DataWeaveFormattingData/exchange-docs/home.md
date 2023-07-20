@@ -1,8 +1,106 @@
 # Mule Training - Dataweave expressions - Complex Transformations XML
 
+Using a Lookup Function to execute a Flow.
 Adding data weave functions.
 Adding Custom Data Types examples.
 
+```
+curl -X POST -H "Content-type: application/xml" http://localhost:8081/multipleflights -d '<ns2:listAllFlightsResponse xmlns:ns2="http://soap.training.mulesoft.com/">
+    <return airlineName="United">
+        <code>A1B2C3</code><departureDate>2015/10/20</departureDate>
+        <destination>SFO</destination><emptySeats>40</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 737</planeType>
+        <price>400.0</price>
+    </return>
+    <return airlineName="Delta">
+        <code>A1B2C4</code>
+        <departureDate>2015/10/21</departureDate><destination>LAX</destination><emptySeats>10</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 737</planeType>
+        <price>199.99</price>
+    </return>
+    <return airlineName="Delta">
+        <code>AFFFC5</code><departureDate>2015/10/21</departureDate><destination>PDX</destination>
+        <emptySeats>30</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 777</planeType>
+        <price>283.0</price>
+    </return>
+    <return airlineName="Delta">
+        <code>AFFFC4</code>
+        <departureDate>2015/10/20</departureDate>
+        <destination>PDX</destination><emptySeats>0</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 777</planeType>
+        <price>283.0</price>
+    </return>
+    <return airlineName="Delta">
+        <code>AFFFC3</code>
+        <departureDate>2015/10/20</departureDate>
+        <destination>PDX</destination><emptySeats>23</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 777</planeType>
+        <price>283.0</price>
+    </return>
+</ns2:listAllFlightsResponse>' -v
+```
+
+response
+```
+Note: Unnecessary use of -X or --request, POST is already inferred.
+*   Trying 127.0.0.1:8081...
+* Connected to localhost (127.0.0.1) port 8081 (#0)
+> POST /multipleflights HTTP/1.1
+> Host: localhost:8081
+> User-Agent: curl/8.1.2
+> Accept: */*
+> Content-type: application/xml
+> Content-Length: 1529
+>
+< HTTP/1.1 200
+< Content-Type: application/dw; charset=UTF-8
+< Content-Length: 1717
+< Date: Thu, 20 Jul 2023 15:47:05 GMT
+<
+{
+  flights: [
+    {
+      destination: "LAX",
+      price: "199.99" as String {format: "###.##"},
+      totalSeats: 150 as Number {encoding: "UTF-8", mediaType: "application/java; charset=UTF-8", mimeType: "application/java", class: "java.lang.Integer"},
+      planeType: "boeing-737",
+      departureDate: "Oct 21, 2015" as String {format: "MMM dd, yyyy"},
+      availableSeats: 10
+    } as Object {class: "com.mulesoft.training.Flight"},
+    {
+      destination: "PDX",
+      price: "283" as String {format: "###.##"},
+      totalSeats: 300 as Number {encoding: "UTF-8", mediaType: "application/java; charset=UTF-8", mimeType: "application/java", class: "java.lang.Integer"},
+      planeType: "boeing-777",
+      departureDate: "Oct 20, 2015" as String {format: "MMM dd, yyyy"},
+      availableSeats: 23
+    } as Object {class: "com.mulesoft.training.Flight"},
+    {
+      destination: "PDX",
+      price: "283" as String {format: "###.##"},
+      totalSeats: 300 as Number {encoding: "UTF-8", mediaType: "application/java; charset=UTF-8", mimeType: "application/java", class: "java.lang.Integer"},
+      planeType: "boeing-777",
+      departureDate: "Oct 21, 2015" as String {format: "MMM dd, yyyy"},
+      availableSeats: 30
+    } as Object {class: "com.mulesoft.training.Flight"},
+    {
+      destination: "SFO",
+      price: "400" as String {format: "###.##"},
+      totalSeats: 150 as Number {encoding: "UTF-8", mediaType: "application/java; charset=UTF-8", mimeType: "application/java", class: "java.lang.Integer"},
+      planeType: "boeing-737",
+      departureDate: "Oct 20, 2015" as String {format: "MMM dd, yyyy"},
+      availableSeats: 40
+    } as Object {class: "com.mulesoft.training.Flight"}
+  ]
+* Connection #0 to host localhost left intact
+}%
+```
 
 ## Prior Labs
 
