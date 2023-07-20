@@ -235,8 +235,10 @@ data: {
 		<ee:transform doc:name="Transform Message" doc:id="997947a9-6df4-46e1-8518-e40c6d387e28" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
-output application/dw
+output application/java
 
+type Currency = String {format: "###.##"}
+type Flight = Object {class: "com.mulesoft.training.Flight"}
 //var numSeats = 400
 //var numSeats = (x=400) -> x
 //var numSeats = (planeType: String) -> 
@@ -257,14 +259,14 @@ fun getNumSeats(planeType: String) = do{
 ---
 flights:
 	payload..*return map (object, index) -> {
-			dest: object.destination,
-			price: object.price as Number {class: "java.land.Double"},
-			price2: object.price as Number as String {format: "###.##"},
-			totalSeats: getNumSeats(object.planeType),
-			plan: upper(object.planeType),
-			date: object.departureDate as Date {format: "yyyy/MM/dd"} 
+			destination: object.destination,
+			//price: object.price as Number {class: "java.lang.Double"},
+			price: object.price as Number as Currency,
+			//totalSeats: getNumSeats(object.planeType),
+			planeType: upper(object.planeType),
+			departureDate: object.departureDate as Date {format: "yyyy/MM/dd"} 
 			as String {format: "MMM dd, yyyy"}	
-}]]></ee:set-payload>
+} as Flight]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="d1ec3368-98ad-4507-823f-a6efccbfd1c3" />
